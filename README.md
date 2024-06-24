@@ -1,0 +1,1 @@
+Create a dynamic data visualization through d3.js that using data from a csv file. The data should be incorporated from the file given to us by the professor. 
