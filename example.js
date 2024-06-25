@@ -16,7 +16,7 @@ function main() {
             .attr("height", height + margin)
             .append("g")
     //Step 1: Data Processing
-        d3.csv("mock_stock_data.csv", d3.autoType).then( function(data){
+        d3.csv('mock_stock_data.csv').then( function(data){
         
         const parseDate = d3.timeParse("%Y-%m-%d")
         data.forEach(d =>{
@@ -28,7 +28,7 @@ function main() {
     xScale.domain(d3.extent(data, d => d.date));
     yScale.domain(0, d3.max(data, d => d.Price ));
 
-    g = svg.("svg")
+    var g = svg
     svg.append("g")
         .attr("transform", 'translate(0,'+ height +')')
         .call(d3.axisBottom(xScale))
@@ -49,4 +49,21 @@ function main() {
             .attr("d", line);
         }).catch(function(error){
             alert('Error loading csv file', error)})
+
+            //Step 3: Interactivity
+        function mouseOver(d, i){
+            var xPos = parseFloat(d3.select(this).attr('x')) + xScale.bandWidth() / 2
+            var yPos = parseFloat(d3.select(this).attr('y')) / 2 + height / 2
+
+            d3.select('#tooltip')
+                    .style('left', xPos + 'px')
+                    .style('top'), yPos + 'px'
+                    .select('#value').text(i.value)
+
+            d3.select('#tooltip').classed('hidden', false);
+        }
+        function mouseOut(d, i){
+            d3.select('#tooltip').classed('hidden', true);
+        }
+
  }

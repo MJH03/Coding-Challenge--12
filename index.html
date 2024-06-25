@@ -6,8 +6,39 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="example.js"></script>
     <title>Mock-Data Value</title>
+    <!--Added style for tool tip-->
+    <style> 
+        #tooltip{
+            position: absolute;
+            width: 200px;
+            height: auto;
+            padding: 10px;
+            background-color: beige;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+            -moz-box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+        }
+        #tooltip.hidden{
+                display: none;
+        }
+        #tooltip p {
+            margin: 0;
+            font-family: 'Times New Roman';
+            font-size: 20px;
+            line-height: 20px;
+
+
+        }
+    </style>
 </head>
 <body onload="main()">
+    Coding Challenge #12
     <svg width="600" height="600"></svg>
+    <div id="tooltip" class="hidden">
+        <p><span id="value">100</span></p>
+    </div>
 </body>
 </html>
