@@ -1,10 +1,52 @@
 //U6899-7808
-//Step 1: Data Processing
+//Step 2: Visualization
 function main() {
-    d3.csv('../data/mock_stock_data.csv', d3.autoType).then( function(data){
-        var svg = d3.select("svg")
+    var svg = d3.select("svg");
+        var margin = 200;
+        var width = svg.attr("width") - margin
+        var height = svg.attr("height") - margin
         
-    
-    })
+        var xScale = d3.scaleTime()
+            .range([0, width]);
+        var yScale = d3.scaleLinear()
+            .range([height, 0])
 
-}
+        svg.append()
+            .attr("width", width + margin)
+            .attr("height", height + margin)
+            .append("g")
+    //Step 1: Data Processing
+        d3.csv("mock_stock_data.csv", d3.autoType).then( function(data){
+        
+        const parseDate = d3.timeParse("%Y-%m-%d")
+        data.forEach(d =>{
+            d.Date = parseDate(d.Date)
+            d.Stock = d.Stock
+            d.Price = +d.Price
+        
+        }) // Continued Step 2 chosing chart Line chart
+    xScale.domain(d3.extent(data, d => d.date));
+    yScale.domain(0, d3.max(data, d => d.Price ));
+
+    g = svg.("svg")
+    svg.append("g")
+        .attr("transform", 'translate(0,'+ height +')')
+        .call(d3.axisBottom(xScale))
+        .ticks(d3.timeDay.every(1))
+        .tickFormat(d3.timeFormat(("%Y-%m-%d")));
+
+    svg.append("g")
+        .call(d3.axisLeft(yScale))
+
+    var line = d3.line()
+        .xScale(d => xScale(d.Date))
+        .yScale(d => yScale(d.Price));
+
+        svg.append("path")
+            .datum(data)
+            .attr("stroke", d.Stock === 'Apple' ? "orangered" : "seagreen")
+            .attr("stroke-width", 1)
+            .attr("d", line);
+        }).catch(function(error){
+            alert('Error loading csv file', error)})
+ }
